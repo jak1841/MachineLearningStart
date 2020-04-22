@@ -1,55 +1,52 @@
 import random
+import matplotlib.pyplot as plt
+import numpy as np
+#This Project will illustrate my skills at matplotlib and gradient descent
 
-#This Project will be a machine learning Project which will see if a random point is eithier above or below the line of y = 50
-#It Will use the simple perceptron neural Network
+#LearningRate
+learningrate = .01
 
-#initalize weights
-weight = []
+#We have a function y = (x - 5) + 9 and we will figure out the lowest value using gradient descent by picking a random x value
+def function(x):
+    return (x-5)**2 + 9
 
-#Bias
-weight.append(random.random())
-#Weight
-weight.append(random.random())
+#Derivative of the function at x
+def derivativefunction(x):
+    return 2*(x-5)
 
-#Learning Rate
-learningRate = .1
+#Finds gradient using x = x - learningrate(dy/dx)
+def findGradient(x):
+    #Gives us the y of the function at x at the beginning
+    y = function(x)
 
-#Update weight from this formula w1 = w1 + (target-guess)y1
-def updateWeight(inputy):
-    #Guess is created by combining all weights with inputs and adding the bias
-    guess = (weight[1]*inputy) + weight[0]
+    for z in range(1000):
+        #Choose Direction of steepest descent by looking at derivative
+        x = x - (learningrate*derivativefunction(x))
 
-    #Activation function
-    if(guess >= 0):
-        guess = 1
-    else:
-        guess = 0
+    print(y)
+    print(function(x))
 
-    answer = 0
-    #The answer is calculated
-    if(inputy>=50):
-        answer = 1
-    else:
-        answer = 0
+findGradient(10000)
 
-    #Updates the weight
-    weight[1] = weight[1] + (.1*(answer - guess)*inputy)
-    weight[0] = weight[0] + (.1*(answer-guess))
+#This all was taken by scriptverse
+# 100 linearly spaced numbers
+x = np.linspace(0,30,10)
 
-#Sees For User how well it is doing
-def guess(inputy):
-    guess = weight[1]*inputy + weight[0]
-    if(guess >= 0):
-        print("Above Line")
-    else:
-        print("Below Line")
+# the function, which is y = x^2 here
+y = (x-5)**2 + 9
 
+# # setting the axes at the centre
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+ax.spines['left'].set_position('center')
+ax.spines['bottom'].set_position('zero')
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+ax.xaxis.set_ticks_position('bottom')
+ax.yaxis.set_ticks_position('left')
 
-#Training
-for x in range(1,10000):
-    rnumy = random.randrange(0,100)
-    updateWeight(rnumy)
+# plot the function
+plt.plot(x,y,'r')
 
-print(weight)
-guess(50)
-guess(49)
+# show the plot
+plt.show()
